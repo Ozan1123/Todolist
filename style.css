@@ -1,0 +1,268 @@
+:root {
+    --primary-gradient: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+    --bg-gradient: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --text-color: #1e293b;
+    --text-muted: #64748b;
+    --danger-color: #ef4444;
+    --success-color: #10b981;
+    --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --radius: 16px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: var(--bg-gradient);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding-top: 4rem;
+    overflow-x: hidden;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    width: 100%;
+    max-width: 550px;
+    padding: 2rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    animation: floatUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes floatUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    letter-spacing: -1px;
+}
+
+p.subtitle {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.input-group {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+}
+
+input[type="text"] {
+    flex: 1;
+    border: 2px solid transparent;
+    outline: none;
+    padding: 1rem 1.25rem;
+    font-size: 1.1rem;
+    border-radius: var(--radius);
+    background: white;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
+    transform: scale(1.02);
+}
+
+input[type="text"].shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    border-color: var(--danger-color);
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+button.add-btn {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    padding: 0 2rem;
+    border-radius: var(--radius);
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+}
+
+button.add-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5);
+}
+
+button.add-btn:active {
+    transform: translateY(0) scale(0.95);
+}
+
+ul.task-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+li.task-item {
+    background: white;
+    padding: 1.25rem;
+    border-radius: var(--radius);
+    box-shadow: 0 2px 5px rgb(0 0 0 / 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 6px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+li.task-item:hover {
+    transform: translateX(5px) scale(1.01);
+    box-shadow: 0 8px 15px rgb(0 0 0 / 0.1);
+    border-left-color: #a855f7;
+}
+
+li.task-item.completed {
+    background-color: #f8fafc;
+    border-left-color: var(--success-color);
+}
+
+li.task-item.completed span.task-text {
+    text-decoration: line-through;
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+.task-content {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex: 1;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.checkbox {
+    width: 28px;
+    height: 28px;
+    border: 2px solid #cbd5e1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+li.task-item:hover .checkbox {
+    border-color: #a855f7;
+}
+
+li.task-item.completed .checkbox {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    transform: scale(1.1);
+}
+
+.checkbox::after {
+    content: '✓';
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s;
+}
+
+li.task-item.completed .checkbox::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.delete-btn {
+    background: #fee2e2;
+    border: none;
+    color: var(--danger-color);
+    cursor: pointer;
+    padding: 0.6rem;
+    border-radius: 10px;
+    transition: all 0.3s;
+    opacity: 0;
+    transform: translateX(10px);
+    z-index: 1;
+}
+
+li.task-item:hover .delete-btn {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.delete-btn:hover {
+    background-color: var(--danger-color);
+    color: white;
+    transform: rotate(90deg);
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    margin-top: 3rem;
+    font-size: 1.1rem;
+    opacity: 0.8;
+}
+
+/* Confetti Particle */
+.particle {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background-color: #f00;
+    pointer-events: none;
+    border-radius: 50%;
+    animation: pop 0.8s ease-out forwards;
+    z-index: 100;
+}
+
+@keyframes pop {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
