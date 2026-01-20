@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const addBtn = document.getElementById('addBtn');
     const taskList = document.getElementById('taskList');
 
+    // LocalStorage key
+    const STORAGE_KEY = 'todolist_tasks';
+
+    // Load tasks on page load
     fetchTasks();
 
     addBtn.addEventListener('click', addTask);
@@ -10,17 +14,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') addTask();
     });
 
-    async function fetchTasks() {
-        try {
-            const response = await fetch('api.php');
-            const tasks = await response.json();
-            renderTasks(tasks);
-        } catch (error) {
-            console.error('Error fetching tasks:', error);
-        }
+    // Get tasks from LocalStorage
+    function getTasks() {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
     }
 
-    async function addTask() {
+    // Save tasks to LocalStorage
+    function saveTasks(tasks) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    }
+
+    // Fetch and render tasks
+    function fetchTasks() {
+        const tasks = getTasks();
+        renderTasks(tasks);
+    }
+
+    // Add new task
+    function addTask() {
         const title = taskInput.value.trim();
         if (!title) {
             taskInput.classList.add('shake');
@@ -28,56 +40,43 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        try {
-            const response = await fetch('api.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'add', title: title })
-            });
-            const result = await response.json();
-            if (result.success) {
-                taskInput.value = '';
-                fetchTasks();
-            }
-        } catch (error) {
-            console.error('Error adding task:', error);
-        }
+        const tasks = getTasks();
+        const newTask = {
+            id: Date.now(), // Unique ID based on timestamp
+            title: title,
+            status: 'pending',
+            created_at: new Date().toISOString()
+        };
+
+        tasks.unshift(newTask); // Add to beginning (newest first)
+        saveTasks(tasks);
+        taskInput.value = '';
+        renderTasks(tasks);
     }
 
-    async function toggleTask(id, currentStatus, element) {
+    // Toggle task status
+    function toggleTask(id, currentStatus, element) {
         const newStatus = currentStatus === 'pending' ? 'completed' : 'pending';
-        try {
-            const response = await fetch('api.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'toggle', id: id, status: newStatus })
-            });
-            const result = await response.json();
-            if (result.success) {
-                if (newStatus === 'completed') {
-                    createParticles(element);
-                }
-                fetchTasks();
+        const tasks = getTasks();
+        
+        const taskIndex = tasks.findIndex(t => t.id === id);
+        if (taskIndex !== -1) {
+            tasks[taskIndex].status = newStatus;
+            saveTasks(tasks);
+            
+            if (newStatus === 'completed') {
+                createParticles(element);
             }
-        } catch (error) {
-            console.error('Error toggling task:', error);
+            renderTasks(tasks);
         }
     }
 
-    async function deleteTask(id) {
-        try {
-            const response = await fetch('api.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'delete', id: id })
-            });
-            const result = await response.json();
-            if (result.success) {
-                fetchTasks();
-            }
-        } catch (error) {
-            console.error('Error deleting task:', error);
-        }
+    // Delete task
+    function deleteTask(id) {
+        const tasks = getTasks();
+        const filteredTasks = tasks.filter(t => t.id !== id);
+        saveTasks(filteredTasks);
+        renderTasks(filteredTasks);
     }
 
     function renderTasks(tasks) {
