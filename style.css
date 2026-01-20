@@ -1,268 +1,434 @@
+/* ══════════════════════════════════════════════════════════════
+   MIDNIGHT AGENDA — Premium Task Manager
+   Color Palette: Obsidian Black, Silver, Crimson Red, Night Sky Blue
+   ══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 :root {
-    --primary-gradient: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
-    --bg-gradient: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --text-color: #1e293b;
-    --text-muted: #64748b;
-    --danger-color: #ef4444;
-    --success-color: #10b981;
-    --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --radius: 16px;
+    /* Core Colors */
+    --obsidian: #0a0a0b;
+    --charcoal: #141416;
+    --graphite: #1c1c1f;
+    --silver-mist: #8a8a94;
+    --silver-bright: #c4c4cc;
+    --pearl: #e8e8ec;
+    
+    /* Accent Colors */
+    --crimson: #dc2626;
+    --crimson-glow: rgba(220, 38, 38, 0.15);
+    --night-blue: #1e3a5f;
+    --sky-deep: #0c4a6e;
+    --aurora: #38bdf8;
+    
+    /* Functional */
+    --success: #059669;
+    --success-soft: rgba(5, 150, 105, 0.12);
+    
+    /* Effects */
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(255, 255, 255, 0.12);
+    --glow-red: 0 0 40px rgba(220, 38, 38, 0.2);
+    --glow-blue: 0 0 40px rgba(56, 189, 248, 0.15);
 }
 
-* {
+*, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Inter', sans-serif;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-    background: var(--bg-gradient);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    color: var(--text-color);
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--obsidian);
+    color: var(--pearl);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    padding-top: 4rem;
+    padding: 3rem 1.5rem;
+    position: relative;
     overflow-x: hidden;
 }
 
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+/* Subtle ambient gradient */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(ellipse at 20% 20%, var(--night-blue) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(220, 38, 38, 0.08) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
 }
+
+/* ═══════════════════════════════════════════
+   MAIN CONTAINER
+   ═══════════════════════════════════════════ */
 
 .container {
+    position: relative;
+    z-index: 1;
     width: 100%;
-    max-width: 550px;
-    padding: 2rem;
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
-    animation: floatUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    max-width: 580px;
 }
 
-@keyframes floatUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+/* ═══════════════════════════════════════════
+   HEADER — Asymmetric Title Block
+   ═══════════════════════════════════════════ */
 
 header {
-    margin-bottom: 2.5rem;
-    text-align: center;
+    margin-bottom: 3rem;
+    padding-left: 0.25rem;
 }
 
 h1 {
-    font-size: 3rem;
-    font-weight: 900;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem;
-    letter-spacing: -1px;
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--pearl);
+    position: relative;
+    display: inline-block;
 }
 
-p.subtitle {
-    color: var(--text-muted);
-    font-weight: 500;
+/* Red accent line */
+h1::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background: var(--crimson);
+    border-radius: 2px;
 }
+
+.subtitle {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--silver-mist);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
+/* ═══════════════════════════════════════════
+   INPUT SECTION — Floating Input Bar
+   ═══════════════════════════════════════════ */
 
 .input-group {
     display: flex;
-    gap: 0.75rem;
+    gap: 0;
     margin-bottom: 2.5rem;
-    position: relative;
+    background: var(--charcoal);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.input-group:focus-within {
+    border-color: var(--aurora);
+    box-shadow: var(--glow-blue);
 }
 
 input[type="text"] {
     flex: 1;
-    border: 2px solid transparent;
+    background: transparent;
+    border: none;
     outline: none;
-    padding: 1rem 1.25rem;
-    font-size: 1.1rem;
-    border-radius: var(--radius);
-    background: white;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
-    transition: all 0.3s ease;
+    padding: 1.15rem 1.25rem;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--pearl);
+    letter-spacing: 0.01em;
 }
 
-input[type="text"]:focus {
-    border-color: #a855f7;
-    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
-    transform: scale(1.02);
+input[type="text"]::placeholder {
+    color: var(--silver-mist);
+    opacity: 0.6;
 }
 
 input[type="text"].shake {
-    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-    border-color: var(--danger-color);
+    animation: shake 0.4s ease;
 }
 
 @keyframes shake {
-    10%, 90% { transform: translate3d(-1px, 0, 0); }
-    20%, 80% { transform: translate3d(2px, 0, 0); }
-    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-    40%, 60% { transform: translate3d(4px, 0, 0); }
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
 }
 
 button.add-btn {
-    background: var(--primary-gradient);
-    color: white;
+    background: var(--crimson);
     border: none;
-    padding: 0 2rem;
-    border-radius: var(--radius);
-    font-weight: 700;
-    font-size: 1.1rem;
+    padding: 1.15rem 1.75rem;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
 }
 
 button.add-btn:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5);
+    background: #b91c1c;
 }
 
 button.add-btn:active {
-    transform: translateY(0) scale(0.95);
+    transform: scale(0.97);
 }
 
-ul.task-list {
+/* ═══════════════════════════════════════════
+   TASK LIST — Clean Rows with Hover States
+   ═══════════════════════════════════════════ */
+
+.task-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
 }
 
-li.task-item {
-    background: white;
-    padding: 1.25rem;
-    border-radius: var(--radius);
-    box-shadow: 0 2px 5px rgb(0 0 0 / 0.05);
+.task-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-left: 6px solid transparent;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: all 0.25s ease;
     position: relative;
-    overflow: hidden;
 }
 
-li.task-item:hover {
-    transform: translateX(5px) scale(1.01);
-    box-shadow: 0 8px 15px rgb(0 0 0 / 0.1);
-    border-left-color: #a855f7;
+.task-item:last-child {
+    border-bottom: none;
 }
 
-li.task-item.completed {
-    background-color: #f8fafc;
-    border-left-color: var(--success-color);
+.task-item:hover {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.02) 50%, transparent 100%);
 }
 
-li.task-item.completed span.task-text {
+/* Completed State */
+.task-item.completed {
+    opacity: 0.5;
+}
+
+.task-item.completed .task-text {
     text-decoration: line-through;
-    color: var(--text-muted);
-    opacity: 0.6;
+    text-decoration-color: var(--silver-mist);
 }
+
+.task-item.completed .checkbox {
+    background: var(--success);
+    border-color: var(--success);
+}
+
+.task-item.completed .checkbox::after {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* ═══════════════════════════════════════════
+   TASK CONTENT — Checkbox + Text
+   ═══════════════════════════════════════════ */
 
 .task-content {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: 1rem;
     flex: 1;
     cursor: pointer;
-    z-index: 1;
+    padding-right: 1rem;
 }
 
 .checkbox {
-    width: 28px;
-    height: 28px;
-    border: 2px solid #cbd5e1;
-    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--silver-mist);
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     flex-shrink: 0;
-}
-
-li.task-item:hover .checkbox {
-    border-color: #a855f7;
-}
-
-li.task-item.completed .checkbox {
-    background-color: var(--success-color);
-    border-color: var(--success-color);
-    transform: scale(1.1);
+    transition: all 0.2s ease;
+    position: relative;
 }
 
 .checkbox::after {
     content: '✓';
+    font-size: 12px;
+    font-weight: 700;
     color: white;
-    font-size: 16px;
-    font-weight: bold;
     opacity: 0;
-    transform: scale(0);
-    transition: all 0.2s;
+    transform: scale(0.5) rotate(-20deg);
+    transition: all 0.2s ease;
 }
 
-li.task-item.completed .checkbox::after {
-    opacity: 1;
-    transform: scale(1);
+.task-item:hover .checkbox {
+    border-color: var(--aurora);
 }
+
+.task-text {
+    font-size: 1rem;
+    color: var(--silver-bright);
+    font-weight: 400;
+    line-height: 1.4;
+    transition: all 0.2s ease;
+}
+
+.task-item:hover .task-text {
+    color: var(--pearl);
+}
+
+/* ═══════════════════════════════════════════
+   DELETE BUTTON — Minimal Icon
+   ═══════════════════════════════════════════ */
 
 .delete-btn {
-    background: #fee2e2;
+    background: transparent;
     border: none;
-    color: var(--danger-color);
+    color: var(--silver-mist);
     cursor: pointer;
-    padding: 0.6rem;
-    border-radius: 10px;
-    transition: all 0.3s;
+    padding: 0.5rem;
+    border-radius: 6px;
     opacity: 0;
-    transform: translateX(10px);
-    z-index: 1;
+    transform: translateX(8px);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-li.task-item:hover .delete-btn {
+.delete-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.task-item:hover .delete-btn {
     opacity: 1;
     transform: translateX(0);
 }
 
 .delete-btn:hover {
-    background-color: var(--danger-color);
-    color: white;
-    transform: rotate(90deg);
+    background: var(--crimson-glow);
+    color: var(--crimson);
 }
+
+/* ═══════════════════════════════════════════
+   EMPTY STATE
+   ═══════════════════════════════════════════ */
 
 .empty-state {
     text-align: center;
-    color: var(--text-muted);
-    margin-top: 3rem;
-    font-size: 1.1rem;
-    opacity: 0.8;
+    padding: 4rem 2rem;
+    color: var(--silver-mist);
+    font-size: 0.95rem;
+    opacity: 0.7;
+    border: 1px dashed var(--border-subtle);
+    border-radius: 8px;
+    margin-top: 0.5rem;
 }
 
-/* Confetti Particle */
+/* ═══════════════════════════════════════════
+   PARTICLE EFFECT
+   ═══════════════════════════════════════════ */
+
 .particle {
     position: fixed;
-    width: 8px;
-    height: 8px;
-    background-color: #f00;
+    width: 6px;
+    height: 6px;
     pointer-events: none;
     border-radius: 50%;
-    animation: pop 0.8s ease-out forwards;
-    z-index: 100;
+    z-index: 1000;
+    animation: particleFade 0.7s ease-out forwards;
 }
 
-@keyframes pop {
-    0% { transform: translate(0, 0) scale(1); opacity: 1; }
-    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+@keyframes particleFade {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR — Custom Minimal Style
+   ═══════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--graphite);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--silver-mist);
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+    body {
+        padding: 2rem 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h1::before {
+        left: -0.75rem;
+        width: 3px;
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    button.add-btn {
+        padding: 1rem;
+    }
+    
+    .task-item {
+        padding: 1rem 0;
+    }
+    
+    .delete-btn {
+        opacity: 0.6;
+        transform: translateX(0);
+    }
+}
+
+/* ═══════════════════════════════════════════
+   SELECTION STYLE
+   ═══════════════════════════════════════════ */
+
+::selection {
+    background: var(--crimson);
+    color: white;
 }
